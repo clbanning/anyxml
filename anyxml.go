@@ -1,4 +1,5 @@
 // anyxml - marshal an XML document from almost any variable
+// 
 // Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
 // a more genericized XML marshaling capability. 
 //
