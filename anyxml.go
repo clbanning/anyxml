@@ -99,9 +99,12 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 						err = mapToXmlIndent(true, s, tag, val, p)
 					}
 				} else {
+					p.start = 1 // we're 1 tag in to the doc
 					err = mapToXmlIndent(true, s, "element", vv, p)
+					*s += "\n"
 				}
 			default:
+				p.start = 0 
 				err = mapToXmlIndent(true, s, "element", vv, p)
 			}
 			if err != nil {

@@ -18,8 +18,12 @@ var anydata = []byte(`[
         "somekey": "somevalue"
     },
     {
-        "somekey": "somevalue"
-    }
+        "somekey": "somevalue",
+        "someotherkey": "someothervalue"
+    },
+	"a string",
+	3.14159625,
+	true
 ]`)
 
 type MyStruct struct {
