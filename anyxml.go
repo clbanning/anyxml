@@ -104,7 +104,7 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 					*s += "\n"
 				}
 			default:
-				p.start = 0 
+				p.start = 0
 				err = mapToXmlIndent(true, s, "element", vv, p)
 			}
 			if err != nil {
