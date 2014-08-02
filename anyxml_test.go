@@ -36,6 +36,13 @@ func TestXml(t *testing.T) {
 	}
 	fmt.Println("[]->x:", string(x))
 
+	a := []interface{}{ "try", "this", 3.14159265, true }
+	x, err = Xml(a)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println("a->x:", string(x))
+
 	x, err = Xml(3.14159625)
 	if err != nil {
 		t.Fatal(err)
@@ -58,6 +65,13 @@ func TestXmlIndent(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Println("[]->x:\n", string(x))
+
+	a := []interface{}{ "try", "this", 3.14159265, true }
+	x, err = XmlIndent(a, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println("a->x:\n", string(x))
 
 	x, err = XmlIndent(3.14159625, "", "  ")
 	if err != nil {

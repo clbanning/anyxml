@@ -43,10 +43,10 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 						err = mapToXmlIndent(false, s, tag, val, p)
 					}
 				} else {
-					err = mapToXmlIndent(false, s, rt, vv, p)
+					err = mapToXmlIndent(false, s, "element", vv, p)
 				}
 			default:
-				err = mapToXmlIndent(false, s, rt, vv, p)
+				err = mapToXmlIndent(false, s, "element", vv, p)
 			}
 			if err != nil {
 				break
@@ -99,10 +99,10 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 						err = mapToXmlIndent(true, s, tag, val, p)
 					}
 				} else {
-					err = mapToXmlIndent(true, s, rt, vv, p)
+					err = mapToXmlIndent(true, s, "element", vv, p)
 				}
 			default:
-				err = mapToXmlIndent(true, s, rt, vv, p)
+				err = mapToXmlIndent(true, s, "element", vv, p)
 			}
 			if err != nil {
 				break
