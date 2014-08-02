@@ -13,3 +13,7 @@ See mxj package documentation for caveats, etc.
    - in map[string]interface{} values keys that are prepended by a hyphen, '-', are assumed to be
      attributes.
 
+<h4>Documentation</h4>
+
+http://godoc.org/github.com/clbanning/anyxml
+
