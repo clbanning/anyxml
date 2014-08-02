@@ -1,3 +1,9 @@
+// anyxml - marshal an XML document from almost any variable
+// Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
+// a more genericized XML marshaling capability. 
+//
+// See mxj package documentation for more information.  See anyxml_test.go for
+// examples or just try Xml() or XmlIndent().
 package anyxml
 
 import (
