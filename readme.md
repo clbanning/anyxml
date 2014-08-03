@@ -49,7 +49,7 @@ func main() {
 }
 
 /* output:
-	&ltmydoc&gt
+	\<mydoc\>
 		&ltsomekey&gtsomevalue&lt/somekey&gt
 		&ltelement&gtstring&lt/element&gt
 		&ltelement&gt3.14159265&lt/element&gt
