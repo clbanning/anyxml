@@ -19,31 +19,31 @@ http://godoc.org/github.com/clbanning/anyxml
 
 <h4>Example</h4>
 
-Encode an arbitrary JSON object.
+Encode an arbitrary JSON object.<br>
 <code>
-	jasondata = []byte(`[
-		{ "somekey":"somevalue" },
-		"string",
-		3.14159265,
-		true
-	]`)
-	var i interface{}
-	err := json.Unmarshal(jsondaa, &i)
-	if err != nil {
-		// do something
-	}
-	x, err := anyxml.XmlIndent(i, "", "  ", "mydoc")
-	if err != nil {
-		// do something else
-	}
-	fmt.Println(string(x))
-// output:
-<mydoc>
-	<somekey>somevalue</somekey>
-	<element>string</element>
-	<element>3.14159265</element>
-	<element>true</true>
-</mydoc>
+	jasondata = []byte(`[<br>
+		{ "somekey":"somevalue" },<br>
+		"string",<br>
+		3.14159265,<br>
+		true<br>
+	]`)<br>
+	var i interface{}<br>
+	err := json.Unmarshal(jsondaa, &i)<br>
+	if err != nil {<br>
+		// do something<br>
+	}<br>
+	x, err := anyxml.XmlIndent(i, "", "  ", "mydoc")<br>
+	if err != nil {<br>
+		// do something else<br>
+	}<br>
+	fmt.Println(string(x))<br>
+// output:<br>
+<mydoc><br>
+	<somekey>somevalue</somekey><br>
+	<element>string</element><br>
+	<element>3.14159265</element><br>
+	<element>true</true><br>
+</mydoc><br>
 </code>
 
 See, also, xnyxml_test.go
