@@ -17,3 +17,43 @@ See mxj package documentation for caveats, etc.
 
 http://godoc.org/github.com/clbanning/anyxml
 
+<h4>Example</h4>
+
+Encode an arbitrary JSON object.<br>
+<pre><code>
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/clbanning/anyxml"
+)
+
+func main() {
+	jasondata := []byte(`[
+		{ "somekey":"somevalue" },
+		"string",
+		3.14159265,
+		true
+	]`)
+	var i interface{}
+	err := json.Unmarshal(jsondaa, &i)
+	if err != nil {
+		// do something
+	}
+	x, err := anyxml.XmlIndent(i, "", "  ", "mydoc")
+	if err != nil {
+		// do something else
+	}
+	fmt.Println(string(x))
+}
+
+/* output:
+	\<mydoc\>
+		&ltsomekey&gtsomevalue&lt/somekey&gt
+		&ltelement&gtstring&lt/element&gt
+		&ltelement&gt3.14159265&lt/element&gt
+		&ltelement&gttrue&lt/element&gt
+	&lt/mydoc&gt
+*/
+</code></pre>
