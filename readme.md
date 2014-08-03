@@ -48,12 +48,11 @@ func main() {
 	fmt.Println(string(x))
 }
 
-/* output:
+output:
 	&lt:mydoc&gt:
 		&lt:somekey&gt:somevalue&lt:/somekey&gt:
 		&lt:element&gt:string&lt:/element&gt:
 		&lt:element&gt:3.14159265&lt:/element&gt:
 		&lt:element&gt:true&lt:/element&gt:
 	&lt:/mydoc&gt:
-*/
 </code></pre>
