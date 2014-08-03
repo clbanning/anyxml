@@ -49,11 +49,11 @@ func main() {
 }
 
 /* output:
-	<mydoc>
-		<somekey>somevalue</somekey>
-		<element>string</element>
-		<element>3.14159265</element>
-		<element>true</true>
-	</mydoc>
+	&ltmydoc&gt
+		&ltsomekey&gtsomevalue&lt/somekey&gt
+		&ltelement&gtstring&lt/element&gt
+		&ltelement&gt3.14159265&lt/element&gt
+		&ltelement&gttrue&lt/element&gt
+	&lt/mydoc&gt
 */
 </code></pre>
