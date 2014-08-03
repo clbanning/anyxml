@@ -20,8 +20,17 @@ http://godoc.org/github.com/clbanning/anyxml
 <h4>Example</h4>
 
 Encode an arbitrary JSON object.<br>
-</html>
-	jasondata = []byte(`[
+<pre><code>
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/clbanning/anyxml"
+)
+
+func main() {
+	jasondata := []byte(`[
 		{ "somekey":"somevalue" },
 		"string",
 		3.14159265,
@@ -37,11 +46,14 @@ Encode an arbitrary JSON object.<br>
 		// do something else
 	}
 	fmt.Println(string(x))
-// output:
-<mydoc>
-	<somekey>somevalue</somekey>
+}
+
+/* output:
+	<mydoc>
+		<somekey>somevalue</somekey>
 		<element>string</element>
 		<element>3.14159265</element>
 		<element>true</true>
 	</mydoc>
-
+*/
+</code></pre>
