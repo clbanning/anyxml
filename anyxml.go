@@ -1,4 +1,5 @@
-// anyxml - marshal an XML document from almost any variable
+// anyxml - marshal an XML document from almost any Go variable
+// Marshal XML from map[string]interface{}, arrays, slices, alpha/numeric, etc.  
 // 
 // Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
 // a more genericized XML marshaling capability. 

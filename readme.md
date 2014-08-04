@@ -8,8 +8,6 @@ See mxj package documentation for caveats, etc.
 <h4>XML encoding conventions</h4>
 
    - 'nil' Map values, which may represent 'null' JSON values, are encoded as '\<tag/\>'.
-      NOTE: the operation is not symmetric as '\<tag/\>' elements are decoded as 'tag:""' Map values,
-            which, then, encode in JSON as '"tag":""' values..
    - in map[string]interface{} values keys that are prepended by a hyphen, '-', are assumed to be
      attributes.
 
