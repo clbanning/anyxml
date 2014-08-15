@@ -36,7 +36,7 @@ func main() {
 		true
 	]`)
 	var i interface{}
-	err := json.Unmarshal(jsondaa, &i)
+	err := json.Unmarshal(jsondata, &i)
 	if err != nil {
 		// do something
 	}
