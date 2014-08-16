@@ -2,7 +2,9 @@
 // Marshal XML from map[string]interface{}, arrays, slices, alpha/numeric, etc.  
 // 
 // Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
-// a more genericized XML marshaling capability. 
+// a more genericized XML marshaling capability. Note: unmarshaling the resultant
+// XML may not return the original value, since tag labels may have been injected
+// to create the XML representation of the value.
 //
 // See mxj package documentation for more information.  See anyxml_test.go for
 // examples or just try Xml() or XmlIndent().
