@@ -12,6 +12,11 @@ See mxj package documentation for caveats, etc.
    - In map[string]interface{} values keys that are prepended by a hyphen, '-', are assumed to be
      attributes.
 
+<h4>Caveat</h4>
+
+Since some values, such as arrays, may require injecting tag labels to generate the XML, unmarshaling
+the resultant XML not symmetric, i.e., you can't get the original value back without some manipulation..
+
 <h4>Documentation</h4>
 
 http://godoc.org/github.com/clbanning/anyxml
