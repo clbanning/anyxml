@@ -19,25 +19,10 @@ import (
 
 const (
 	DefaultRootTag = "doc"
+	UseGoEmptyElementSyntax = false // if 'true' encode empty element as "<tag></tag>" instead of "<tag/>
 )
 
-var useGoXmlEmptyElemSyntax bool
-
-// XmlGoEmptyElemSyntax() - <tag ...></tag> rather than <tag .../>.
-//	Go's encoding/xml package marshals empty XML elements as <tag ...></tag>.  By default this package
-//	encodes empty elements as <tag .../>.  If you're marshaling Map values that include structures
-//	(which are passed to xml.Marshal for encoding), this will let you conform to the standard package.
-func XmlGoEmptyElemSyntax() {
-	useGoXmlEmptyElemSyntax = true
-}
-
-// XmlDefaultEmptyElemSyntax() - <tag .../> rather than <tag ...></tag>.
-// Return XML encoding for empty elements to the default package setting.
-// Reverses effect of XmlGoEmptyElemSyntax().
-func XmlDefaultEmptyElemSyntax() {
-	useGoXmlEmptyElemSyntax = false
-}
-
+// From: github.com/clbanning/mxj/xml.go with functions relabled: Xml() --> anyxml().
 // Encode a Map as XML.  The companion of NewMapXml().
 // The following rules apply.
 //    - The key label "#text" is treated as the value for a simple element with attributes.
@@ -263,7 +248,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		case map[string]interface{}, []byte, string, float64, bool, int, int32, int64, float32:
 			*s += `</` + key + ">"
 		}
-	} else if useGoXmlEmptyElemSyntax {
+	} else if UseGoEmptyElementSyntax {
 		*s += "></" + key + ">"
 	} else {
 		*s += "/>"

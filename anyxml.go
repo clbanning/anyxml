@@ -41,7 +41,7 @@
 			<element>string</element>
 			<element>3.14159265</element>
 			<element>true</element>
-		</mydoc&gt;
+		</mydoc>
 */
 package anyxml
 
