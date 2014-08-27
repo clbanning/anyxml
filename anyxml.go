@@ -9,7 +9,7 @@
 // See mxj package documentation for more information.  See anyxml_test.go for
 // examples or just try Xml() or XmlIndent().
 /*
- Encode an arbitrary JSON object.<br>
+ Encode an arbitrary JSON object.
 	package main
 	
 	import (
@@ -39,10 +39,10 @@
 	
 	output:
 		<mydoc>
-			<somekey>somevalue</somekey>
-			<element>string</element>
-			<element>3.14159265</element>
-			<element>true</element>
+		  <somekey>somevalue</somekey>
+		  <element>string</element>
+		  <element>3.14159265</element>
+		  <element>true</element>
 		</mydoc>
 */
 package anyxml
