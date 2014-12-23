@@ -15,7 +15,7 @@ See mxj package documentation for caveats, etc.
 <h4>Caveat</h4>
 
 Since some values, such as arrays, may require injecting tag labels to generate the XML, unmarshaling
-the resultant XML not symmetric, i.e., you can't get the original value back without some manipulation..
+the resultant XML is not necessarily symmetric, i.e., you cannot get the original value back without some manipulation.
 
 <h4>Documentation</h4>
 
