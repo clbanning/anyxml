@@ -19,7 +19,7 @@
 	)
 	
 	func main() {
-		jasondata := []byte(`[
+		jsondata := []byte(`[
 			{ "somekey":"somevalue" },
 			"string",
 			3.14159265,
