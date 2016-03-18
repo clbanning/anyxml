@@ -122,7 +122,7 @@ var xmlEscapeChars bool
 
 // XMLEscapeChars(true) forces escaping invalid characters in attribute and element values.
 // NOTE: this is brute force with NO interrogation of '&' being escaped already; if it is
-//       then '&amp;' will be re-escaped as '&amp;amp;'.
+// then '&amp;' will be re-escaped as '&amp;amp;'.
 /*
 	The values are:
 	"   &quot;
