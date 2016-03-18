@@ -9,6 +9,7 @@
 package anyxml
 
 import (
+	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -117,6 +118,45 @@ func (p *pretty) Outdent() {
 	}
 }
 
+var xmlEscapeChars bool
+
+// XMLEscapeChars(true) forces escaping invalid characters in attribute and element values.
+// NOTE: this is brute force with NO interrogation of '&' being escaped already; if it is
+//       then '&amp;' will be re-escaped as '&amp;amp;'.
+/*
+	The values are:
+	"   &quot;
+	'   &apos;
+	<   &lt;
+	>   &gt;
+	&   &amp;
+*/
+func XMLEscapeChars(b bool) {
+	xmlEscapeChars = b
+}
+
+// order is important - must scan for '&' first
+var escapechars = [][2]string {
+	{`&`, `&amp;`},
+	{`<`, `&lt;`},
+	{`>`, `&gt;`},
+	{`"`, `&quot;`},
+	{`'`, `&apos;`},
+}
+
+func escapeChars(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+
+	b := []byte(s)
+	for _, v := range escapechars {
+		n := bytes.Count(b, []byte(v[0]))
+		b = bytes.Replace(b, []byte(v[0]), []byte(v[1]), n)
+	}
+	return string(b)
+}
+
 // where the work actually happens
 // returns an error if an attribute is not atomic
 // patched with new version in github.com/clbanning/mxj - 2015.11.15
@@ -138,26 +178,33 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		vv := value.(map[string]interface{})
 		lenvv := len(vv)
 		// scan out attributes - keys have prepended hyphen, '-'
-		var cntAttr int
 		attrlist := make([][2]string, len(vv))
 		var n int
 		for k, v := range vv {
 			if k[:1] == "-" {
-				cntAttr++
 				switch v.(type) {
-				case string, float64, bool, int, int32, int64, float32:
+				case float64, bool, int, int32, int64, float32:
 					attrlist[n][0] = k[1:]
 					attrlist[n][1] = fmt.Sprintf("%v", v)
-					n++
+				case string:
+					if xmlEscapeChars {
+						v = escapeChars(v.(string))
+					}
+					attrlist[n][0] = k[1:]
+					attrlist[n][1] = fmt.Sprintf("%v", v)
 				case []byte:
+					if xmlEscapeChars {
+						v = []byte(escapeChars(string(v.([]byte))))
+					}
 					attrlist[n][0] = k[1:]
 					attrlist[n][1] = fmt.Sprintf("%v", string(v.([]byte)))
 				default:
 					return fmt.Errorf("invalid attribute value for: %s", k)
 				}
+				n++
 			}
 		}
-		if cntAttr > 0 {
+		if n > 0 {
 			attrlist = attrlist[:n]
 			sort.Sort(attrList(attrlist))
 			for _, v := range attrlist {
@@ -166,13 +213,13 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		}
 
 		// only attributes?
-		if cntAttr == lenvv {
+		if n == lenvv {
 			break
 		}
 		// simple element? Note: '#text" is an invalid XML tag.
 		if v, ok := vv["#text"]; ok {
-			if cntAttr+1 < lenvv {
-				return errors.New("#text key occurs with other non-attribute keys")
+			if n+1 < lenvv {
+				return errors.New("#text key occurs witht other non-attribute keys")
 			}
 			*s += ">" + fmt.Sprintf("%v", v)
 			endTag = true
@@ -241,13 +288,25 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 	default: // handle anything - even goofy stuff
 		elen = 0
 		switch value.(type) {
-		case string, float64, bool, int, int32, int64, float32:
+		case float64, bool, int, int32, int64, float32:
+			v := fmt.Sprintf("%v", value)
+			elen = len(v)
+			if elen > 0 {
+				*s += ">" + v
+			}
+		case string:
+			if xmlEscapeChars {
+				value = escapeChars(value.(string))
+			}
 			v := fmt.Sprintf("%v", value)
 			elen = len(v)
 			if elen > 0 {
 				*s += ">" + v
 			}
 		case []byte: // NOTE: byte is just an alias for uint8
+			if xmlEscapeChars {
+				value =[]byte(escapeChars(string(value.([]byte))))
+			}
 			// similar to how xml.Marshal handles []byte structure members
 			v := string(value.([]byte))
 			elen = len(v)
