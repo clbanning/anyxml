@@ -13,13 +13,13 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 )
-
 
 // --------------------------------- Xml, XmlIndent - from mxj -------------------------------
 
 const (
-	DefaultRootTag = "doc"
+	DefaultRootTag          = "doc"
 	UseGoEmptyElementSyntax = false // if 'true' encode empty element as "<tag></tag>" instead of "<tag/>
 )
 
@@ -102,7 +102,7 @@ type pretty struct {
 	cnt      int
 	padding  string
 	mapDepth int
-	start int
+	start    int
 }
 
 func (p *pretty) Indent() {
@@ -241,8 +241,31 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 	default: // handle anything - even goofy stuff
 		elen = 0
 		switch value.(type) {
-		case string, float64, bool, int, int32, int64, float32:
+		case string:
 			v := fmt.Sprintf("%v", value)
+
+			// Need to encode any special characters that are valid in JSON but invalid in json text values
+			// &   &amp;
+			// "   &quot;
+			// '   &apos;
+			// <   &lt;
+			// >   &gt;
+
+			v = strings.Replace(v, "&", "&amp", -1)
+			v = strings.Replace(v, "\"", "&quot", -1)
+			v = strings.Replace(v, "'", "&apos", -1)
+			v = strings.Replace(v, "<", "&lt", -1)
+			v = strings.Replace(v, ">", "&gt", -1)
+
+			elen = len(v)
+			if elen > 0 {
+				*s += ">" + v
+			}
+
+		case float64, bool, int, int32, int64, float32:
+
+			v := fmt.Sprintf("%v", value)
+
 			elen = len(v)
 			if elen > 0 {
 				*s += ">" + v
