@@ -3,6 +3,7 @@ package anyxml
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -22,6 +23,7 @@ var anydata = []byte(`[
         "someotherkey": "someothervalue",
         "and": { "another": "k:v pair" },
         "list":[ "a string", 3.14159625, true ]
+
     },
 	"a string",
 	3.14159625,
@@ -45,7 +47,7 @@ func TestXml(t *testing.T) {
 	}
 	fmt.Println("[]->x:", string(x))
 
-	a := []interface{}{ "try", "this", 3.14159265, true }
+	a := []interface{}{"try", "this", 3.14159265, true}
 	x, err = Xml(a)
 	if err != nil {
 		t.Fatal(err)
@@ -78,7 +80,7 @@ func TestXmlIndent(t *testing.T) {
 	}
 	fmt.Println("[]->x:\n", string(x))
 
-	a := []interface{}{ "try", "this", 3.14159265, true }
+	a := []interface{}{"try", "this", 3.14159265, true}
 	x, err = XmlIndent(a, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -97,4 +99,40 @@ func TestXmlIndent(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Println("s->x:\n", string(x))
+}
+
+type testEncodingExample struct {
+	Key1 string
+	Key2 string
+	Key3 string
+	Key4 string
+}
+
+func TestXMLEncoding(t *testing.T) {
+
+	testEncodingSourceData := testEncodingExample{"I am fat & happy", "1 < 2", "2 > 1", "I'll have an apostrophe"}
+	x, err := Xml(testEncodingSourceData)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	xmlString := string(x)
+	fmt.Println("TestXMLEncoding XML out \n", xmlString)
+
+	if strings.Contains(xmlString, "I am fat &amp; happy") == false {
+		t.Fatal("Failed to encode ampersand\n")
+	}
+
+	if strings.Contains(xmlString, "1 &lt; 2") != true {
+		t.Fatal("Failed to encode less than\n")
+	}
+
+	if strings.Contains(xmlString, "2 &gt; 1") != true {
+		t.Fatal("Failed to encode greater than\n")
+	}
+
+	if strings.Contains(xmlString, "I&#39;ll have an apostrophe") != true {
+		t.Fatal("Failed to encode apostrophe\n")
+	}
+
 }

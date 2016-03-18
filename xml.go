@@ -247,13 +247,13 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			// Need to encode any special characters that are valid in JSON but invalid in json text values
 			// &   &amp;
 			// "   &quot;
-			// '   &apos;
+			// '   &apos;  - NOTE - This seems to be handled by Go
 			// <   &lt;
 			// >   &gt;
 
 			v = strings.Replace(v, "&", "&amp;", -1)
 			v = strings.Replace(v, "\"", "&quot;", -1)
-			v = strings.Replace(v, "'", "&apos;", -1)
+
 			v = strings.Replace(v, "<", "&lt;", -1)
 			v = strings.Replace(v, ">", "&gt;", -1)
 
