@@ -219,7 +219,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		// simple element? Note: '#text" is an invalid XML tag.
 		if v, ok := vv["#text"]; ok {
 			if n+1 < lenvv {
-				return errors.New("#text key occurs witht other non-attribute keys")
+				return errors.New("#text key occurs with other non-attribute keys")
 			}
 			*s += ">" + fmt.Sprintf("%v", v)
 			endTag = true
