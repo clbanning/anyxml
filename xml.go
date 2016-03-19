@@ -182,24 +182,27 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		// scan out attributes - keys have prepended hyphen, '-'
 		attrlist := make([][2]string, len(vv))
 		var n int
+		var ss string
 		for k, v := range vv {
 			if k[:1] == "-" {
 				switch v.(type) {
+				case string:
+					ss = v.(string)
+					if xmlEscapeChars {
+						ss = escapeChars(ss)
+					}
+					attrlist[n][0] = k[1:]
+					attrlist[n][1] = ss
 				case float64, bool, int, int32, int64, float32:
 					attrlist[n][0] = k[1:]
 					attrlist[n][1] = fmt.Sprintf("%v", v)
-				case string:
-					if xmlEscapeChars {
-						v = escapeChars(v.(string))
-					}
-					attrlist[n][0] = k[1:]
-					attrlist[n][1] = fmt.Sprintf("%v", v)
 				case []byte:
+					ss = string(v.([]byte))
 					if xmlEscapeChars {
-						v = []byte(escapeChars(string(v.([]byte))))
+						ss = escapeChars(ss)
 					}
 					attrlist[n][0] = k[1:]
-					attrlist[n][1] = fmt.Sprintf("%v", string(v.([]byte)))
+					attrlist[n][1] = ss
 				default:
 					return fmt.Errorf("invalid attribute value for: %s", k)
 				}
@@ -290,10 +293,6 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 	default: // handle anything - even goofy stuff
 		elen = 0
 		switch value.(type) {
-		case float64, bool, int, int32, int64, float32:
-			v := fmt.Sprintf("%v", value)
-			elen = len(v) // always > 0
-			*s += ">" + v
 		case string:
 			v := value.(string)
 			if xmlEscapeChars {
@@ -303,6 +302,10 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			if elen > 0 {
 				*s += ">" + v
 			}
+		case float64, bool, int, int32, int64, float32:
+			v := fmt.Sprintf("%v", value)
+			elen = len(v) // always > 0
+			*s += ">" + v
 		case []byte: // NOTE: byte is just an alias for uint8
 			// similar to how xml.Marshal handles []byte structure members
 			v := string(value.([]byte))
