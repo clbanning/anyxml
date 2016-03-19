@@ -152,6 +152,9 @@ func escapeChars(s string) string {
 	b := []byte(s)
 	for _, v := range escapechars {
 		n := bytes.Count(b, []byte(v[0]))
+		if n == 0 {
+			continue
+		}
 		b = bytes.Replace(b, []byte(v[0]), []byte(v[1]), n)
 	}
 	return string(b)
