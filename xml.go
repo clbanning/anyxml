@@ -292,25 +292,23 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		switch value.(type) {
 		case float64, bool, int, int32, int64, float32:
 			v := fmt.Sprintf("%v", value)
-			elen = len(v)
-			if elen > 0 {
-				*s += ">" + v
-			}
+			elen = len(v) // always > 0
+			*s += ">" + v
 		case string:
+			v := value.(string)
 			if xmlEscapeChars {
-				value = escapeChars(value.(string))
+				v = escapeChars(v)
 			}
-			v := fmt.Sprintf("%v", value)
 			elen = len(v)
 			if elen > 0 {
 				*s += ">" + v
 			}
 		case []byte: // NOTE: byte is just an alias for uint8
-			if xmlEscapeChars {
-				value = []byte(escapeChars(string(value.([]byte))))
-			}
 			// similar to how xml.Marshal handles []byte structure members
 			v := string(value.([]byte))
+			if xmlEscapeChars {
+				v = escapeChars(v)
+			}
 			elen = len(v)
 			if elen > 0 {
 				*s += ">" + v
