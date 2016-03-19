@@ -16,11 +16,10 @@ import (
 	"sort"
 )
 
-
 // --------------------------------- Xml, XmlIndent - from mxj -------------------------------
 
 const (
-	DefaultRootTag = "doc"
+	DefaultRootTag          = "doc"
 	UseGoEmptyElementSyntax = false // if 'true' encode empty element as "<tag></tag>" instead of "<tag/>
 )
 
@@ -103,7 +102,7 @@ type pretty struct {
 	cnt      int
 	padding  string
 	mapDepth int
-	start int
+	start    int
 }
 
 func (p *pretty) Indent() {
@@ -136,12 +135,12 @@ func XMLEscapeChars(b bool) {
 }
 
 // order is important - must scan for '&' first
-var escapechars = [][2]string {
-	{`&`, `&amp;`},
-	{`<`, `&lt;`},
-	{`>`, `&gt;`},
-	{`"`, `&quot;`},
-	{`'`, `&apos;`},
+var escapechars = [][2][]byte{
+	{[]byte(`&`), []byte(`&amp;`)},
+	{[]byte(`<`), []byte(`&lt;`)},
+	{[]byte(`>`), []byte(`&gt;`)},
+	{[]byte(`"`), []byte(`&quot;`)},
+	{[]byte(`'`), []byte(`&apos;`)},
 }
 
 func escapeChars(s string) string {
@@ -151,11 +150,11 @@ func escapeChars(s string) string {
 
 	b := []byte(s)
 	for _, v := range escapechars {
-		n := bytes.Count(b, []byte(v[0]))
+		n := bytes.Count(b, v[0])
 		if n == 0 {
 			continue
 		}
-		b = bytes.Replace(b, []byte(v[0]), []byte(v[1]), n)
+		b = bytes.Replace(b, v[0], v[1], n)
 	}
 	return string(b)
 }
@@ -308,7 +307,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			}
 		case []byte: // NOTE: byte is just an alias for uint8
 			if xmlEscapeChars {
-				value =[]byte(escapeChars(string(value.([]byte))))
+				value = []byte(escapeChars(string(value.([]byte))))
 			}
 			// similar to how xml.Marshal handles []byte structure members
 			v := string(value.([]byte))
