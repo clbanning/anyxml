@@ -13,6 +13,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"reflect"
 	"sort"
 )
 
@@ -167,6 +168,21 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 	var isSimple bool
 	var elen int
 	p := &pretty{pp.indent, pp.cnt, pp.padding, pp.mapDepth, pp.start}
+
+	// per clbanning/mxj issue #48, 18apr18 - try and coerce maps to map[string]interface{}
+	if reflect.ValueOf(value).Kind() == reflect.Map {
+		switch value.(type) {
+		case map[string]interface{}:
+		default:
+			val := make(map[string]interface{})
+			vv := reflect.ValueOf(value)
+			keys := vv.MapKeys()
+			for _, k := range keys {
+				val[fmt.Sprint(k)] = vv.MapIndex(k).Interface()
+			}
+			value = val
+		}
+	}
 
 	switch value.(type) {
 	case map[string]interface{}, []byte, string, float64, bool, int, int32, int64, float32:
