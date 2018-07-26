@@ -19,7 +19,7 @@ import (
 
 // --------------------------------- Xml, XmlIndent - from mxj -------------------------------
 
-const (
+var (
 	DefaultRootTag          = "doc"
 	UseGoEmptyElementSyntax = false // if 'true' encode empty element as "<tag></tag>" instead of "<tag/>
 )
@@ -363,7 +363,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			}
 		}
 		switch value.(type) {
-		case map[string]interface{}, []byte, string, float64, bool, int, int32, int64, float32:
+		case map[string]interface{}, []byte, string, float64, bool, int, int32, int64, float32, nil:
 			if elen > 0 || UseGoEmptyElementSyntax {
 				if elen == 0 {
 					*s += ">"

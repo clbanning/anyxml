@@ -1,6 +1,6 @@
 // anyxml - marshal an XML document from almost any Go variable.
-// Marshal XML from map[string]interface{}, arrays, slices, alpha/numeric, etc.  
-// 
+// Marshal XML from map[string]interface{}, arrays, slices, alpha/numeric, etc.
+//
 // Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
 // a more genericized XML marshaling capability. Note: unmarshaling the resultant
 // XML may not return the original value, since tag labels may have been injected
@@ -11,13 +11,13 @@
 /*
  Encode an arbitrary JSON object.
 	package main
-	
+
 	import (
 		"encoding/json"
 		"fmt"
 		"github.com/clbanning/anyxml"
 	)
-	
+
 	func main() {
 		jsondata := []byte(`[
 			{ "somekey":"somevalue" },
@@ -36,7 +36,7 @@
 		}
 		fmt.Println(string(x))
 	}
-	
+
 	output:
 		<mydoc>
 		  <somekey>somevalue</somekey>
@@ -54,6 +54,18 @@ import (
 
 // Encode arbitrary value as XML.  Note: there are no guarantees.
 func Xml(v interface{}, rootTag ...string) ([]byte, error) {
+	var rt string
+	if len(rootTag) == 1 {
+		rt = rootTag[0]
+	} else {
+		rt = DefaultRootTag
+	}
+	if v == nil {
+		if UseGoEmptyElementSyntax {
+			return []byte("<" + rt + "></" + rt + ">"), nil
+		}
+		return []byte("<" + rt + "/>"), nil
+	}
 	if reflect.TypeOf(v).Kind() == reflect.Struct {
 		return xml.Marshal(v)
 	}
@@ -61,13 +73,6 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 	var err error
 	s := new(string)
 	p := new(pretty)
-
-	var rt string
-	if len(rootTag) == 1 {
-		rt = rootTag[0]
-	} else {
-		rt = DefaultRootTag
-	}
 
 	var ss string
 	var b []byte
@@ -95,7 +100,7 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 		ss += *s + "</" + rt + ">"
 		b = []byte(ss)
 	case map[string]interface{}:
-		b, err = anyxml(v.(map[string]interface{}),rootTag...)
+		b, err = anyxml(v.(map[string]interface{}), rootTag...)
 	default:
 		err = mapToXmlIndent(false, s, rt, v, p)
 		b = []byte(*s)
@@ -104,9 +109,20 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 	return b, err
 }
 
-
 // Encode an arbitrary value as a pretty XML string. Note: there are no guarantees.
 func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte, error) {
+	var rt string
+	if len(rootTag) == 1 {
+		rt = rootTag[0]
+	} else {
+		rt = DefaultRootTag
+	}
+	if v == nil {
+		if UseGoEmptyElementSyntax {
+			return []byte(prefix + "<" + rt + ">\n" + prefix + "</" + rt + ">"), nil
+		}
+		return []byte(prefix + "<" + rt + "/>"), nil
+	}
 	if reflect.TypeOf(v).Kind() == reflect.Struct {
 		return xml.MarshalIndent(v, prefix, indent)
 	}
@@ -116,13 +132,6 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 	p := new(pretty)
 	p.indent = indent
 	p.padding = prefix
-
-	var rt string
-	if len(rootTag) == 1 {
-		rt = rootTag[0]
-	} else {
-		rt = DefaultRootTag
-	}
 
 	var ss string
 	var b []byte
@@ -154,7 +163,7 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 		ss += *s + "</" + rt + ">"
 		b = []byte(ss)
 	case map[string]interface{}:
-		b, err = anyxmlIndent(v.(map[string]interface{}),prefix, indent, rootTag...)
+		b, err = anyxmlIndent(v.(map[string]interface{}), prefix, indent, rootTag...)
 	default:
 		err = mapToXmlIndent(true, s, rt, v, p)
 		b = []byte(*s)
