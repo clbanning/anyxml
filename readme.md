@@ -1,4 +1,5 @@
 <html>
+<h1>THIS PACKAGE IS OBSOLETE. Please use <a href="https://github.com/clbanning/mxj/blob/master/anyxml.go">clbanning/mxj/anyxml.go</a> instead.</h1>
 <h2>anyxml - create an XML document from almost any Go type</h2>
 Marshal XML from map[string]interface{}, arrays, slices, and alpha/numeric values.  
 
