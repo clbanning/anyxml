@@ -119,7 +119,7 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 	}
 	if v == nil {
 		if UseGoEmptyElementSyntax {
-			return []byte(prefix + "<" + rt + ">\n" + prefix + "</" + rt + ">"), nil
+			return []byte(prefix + "<" + rt + "></" + rt + ">"), nil
 		}
 		return []byte(prefix + "<" + rt + "/>"), nil
 	}

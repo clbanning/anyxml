@@ -32,6 +32,7 @@ func TestNilMap(t *testing.T) {
 
 	// use Go XML marshal syntax for empty element"
 	UseGoEmptyElementSyntax = true
+
 	checkval = "<root></root>"
 	xmlout, err = Xml(nil, "root")
 	if err != nil {
@@ -42,8 +43,7 @@ func TestNilMap(t *testing.T) {
 		t.Fatal()
 	}
 
-	checkval = `   <root>
-   </root>`
+	checkval = "   <root></root>"
 	xmlout, err = XmlIndent(nil, "   ", "  ", "root")
 	if err != nil {
 		t.Fatal(err)
