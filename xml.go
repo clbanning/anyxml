@@ -11,7 +11,6 @@ package anyxml
 import (
 	"bytes"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"reflect"
 	"sort"
@@ -238,9 +237,18 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			break
 		}
 		// simple element? Note: '#text" is an invalid XML tag.
-		if v, ok := vv["#text"]; ok {
-			if n+1 < lenvv {
-				return errors.New("#text key occurs with other non-attribute keys")
+		if v, ok := vv["#text"]; ok && n+1 == lenvv {
+			switch v.(type) {
+			case string:
+				if xmlEscapeChars {
+					v = escapeChars(v.(string))
+				} else {
+					v = v.(string)
+				}
+			case []byte:
+				if xmlEscapeChars {
+					v = escapeChars(string(v.([]byte)))
+				}
 			}
 			*s += ">" + fmt.Sprintf("%v", v)
 			endTag = true
