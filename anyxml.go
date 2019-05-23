@@ -52,6 +52,20 @@ import (
 	"reflect"
 )
 
+// Default missingElementTag value.
+var missingElemTag = "element"
+
+// MissingElementTag is used to set the lable to be used
+// for values that are not map[string]interface{} type.  By default 
+// the tag label "element" is used. The default can be reset by
+// passing an empty string, "", argument: MissingElementTag("").
+func MissingElementTag(s string) {
+	if s == "" {
+		missingElemTag = "element"
+	}
+	missingElemTag = s
+}
+
 // Encode arbitrary value as XML.  Note: there are no guarantees.
 func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 	var rt string
@@ -88,10 +102,10 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 						err = mapToXmlIndent(false, s, tag, val, p)
 					}
 				} else {
-					err = mapToXmlIndent(false, s, "element", vv, p)
+					err = mapToXmlIndent(false, s, missingElemTag, vv, p)
 				}
 			default:
-				err = mapToXmlIndent(false, s, "element", vv, p)
+				err = mapToXmlIndent(false, s, missingElemTag, vv, p)
 			}
 			if err != nil {
 				break
@@ -149,12 +163,12 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 					}
 				} else {
 					p.start = 1 // we're 1 tag in to the doc
-					err = mapToXmlIndent(true, s, "element", vv, p)
+					err = mapToXmlIndent(true, s, missingElemTag, vv, p)
 					*s += "\n"
 				}
 			default:
 				p.start = 0
-				err = mapToXmlIndent(true, s, "element", vv, p)
+				err = mapToXmlIndent(true, s, missingElemTag, vv, p)
 			}
 			if err != nil {
 				break
