@@ -1,4 +1,8 @@
 // anyxml - marshal an XML document from almost any Go variable.
+// Copyright 2012-2019, Charles Banning. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file
+
 // Marshal XML from map[string]interface{}, arrays, slices, alpha/numeric, etc.
 //
 // Wraps xml.Marshal with functionality in github.com/clbanning/mxj to create
