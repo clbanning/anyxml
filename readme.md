@@ -60,3 +60,5 @@ output:
 	  &lt;element&gt;true&lt;/element&gt;
 	&lt;/mydoc&gt;
 </code></pre>
+
+An example of encoding a map with mixed key types is in anyxml/examples/goofy_map.go.

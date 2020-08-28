@@ -48,6 +48,9 @@
 		  <element>3.14159265</element>
 		  <element>true</element>
 		</mydoc>
+
+An example of encoding a map[interface{}]interface{} value with mixed key types is 
+in anyxml/examples/goofy_map.go.
 */
 package anyxml
 
