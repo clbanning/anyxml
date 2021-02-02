@@ -17,10 +17,6 @@ See mxj package documentation for caveats, etc.
 Since some values, such as arrays, may require injecting tag labels to generate the XML, unmarshaling
 the resultant XML is not necessarily symmetric, i.e., you cannot get the original value back without some manipulation.
 
-<h4>Dependencies</h4>
-
-   import  github.com/clbanning/mxj/v2
-
 <h4>Documentation</h4>
 
 http://godoc.org/github.com/clbanning/anyxml

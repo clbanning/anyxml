@@ -18,6 +18,7 @@ func TestXmlCheckIsValid(t *testing.T) {
 	fmt.Printf("%v\n", m)
 
 	XmlCheckIsValid()
+	defer XmlCheckIsValid()
 	if _, err := Xml(m); err == nil {
 		t.Fatal("Xml err: nil")
 	}

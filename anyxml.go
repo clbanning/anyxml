@@ -55,11 +55,10 @@ in anyxml/examples/goofy_map.go.
 package anyxml
 
 import (
+	"bytes"
 	"encoding/xml"
+	"io"
 	"reflect"
-
-	// "github.com/clbanning/mxj"
-	"github.com/clbanning/mxj/v2"
 )
 
 // Default missingElementTag value.
@@ -131,8 +130,14 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 	}
 
 	if xmlCheckIsValid {
-		if _, err = mxj.NewMapXml(b); err != nil {
-			return nil, err
+		d := xml.NewDecoder(bytes.NewReader(b))
+		for {
+			_, err = d.Token()
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -200,8 +205,14 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 	}
 
 	if xmlCheckIsValid {
-		if _, err = mxj.NewMapXml(b); err != nil {
-			return nil, err
+		d := xml.NewDecoder(bytes.NewReader(b))
+		for _, err = d.Token(); err != io.EOF; {
+			_, err = d.Token()
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				return nil, err
+			}
 		}
 	}
 
