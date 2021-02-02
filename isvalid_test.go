@@ -23,6 +23,6 @@ func TestXmlCheckIsValid(t *testing.T) {
 	}
 
 	if _, err := XmlIndent(m, "", "   "); err == nil {
-		t.Fatal("Xml err: nil")
+		t.Fatal("XmlIndent err: nil")
 	}
 }
