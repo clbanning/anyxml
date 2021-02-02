@@ -134,6 +134,7 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 		for {
 			_, err = d.Token()
 			if err == io.EOF {
+				err = nil
 				break
 			} else if err != nil {
 				return nil, err
@@ -209,6 +210,7 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 		for _, err = d.Token(); err != io.EOF; {
 			_, err = d.Token()
 			if err == io.EOF {
+				err = nil
 				break
 			} else if err != nil {
 				return nil, err
