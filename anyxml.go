@@ -49,7 +49,7 @@
 		  <element>true</element>
 		</mydoc>
 
-An example of encoding a map[interface{}]interface{} value with mixed key types is 
+An example of encoding a map[interface{}]interface{} value with mixed key types is
 in anyxml/examples/goofy_map.go.
 */
 package anyxml
@@ -57,13 +57,16 @@ package anyxml
 import (
 	"encoding/xml"
 	"reflect"
+
+	// "github.com/clbanning/mxj"
+	"github.com/clbanning/mxj/v2"
 )
 
 // Default missingElementTag value.
 var missingElemTag = "element"
 
 // MissingElementTag is used to set the lable to be used
-// for values that are not map[string]interface{} type.  By default 
+// for values that are not map[string]interface{} type.  By default
 // the tag label "element" is used. The default can be reset by
 // passing an empty string, "", argument: MissingElementTag("").
 func MissingElementTag(s string) {
@@ -127,6 +130,12 @@ func Xml(v interface{}, rootTag ...string) ([]byte, error) {
 		b = []byte(*s)
 	}
 
+	if xmlCheckIsValid {
+		if _, err = mxj.NewMapXml(b); err != nil {
+			return nil, err
+		}
+	}
+
 	return b, err
 }
 
@@ -188,6 +197,12 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 	default:
 		err = mapToXmlIndent(true, s, rt, v, p)
 		b = []byte(*s)
+	}
+
+	if xmlCheckIsValid {
+		if _, err = mxj.NewMapXml(b); err != nil {
+			return nil, err
+		}
 	}
 
 	return b, err

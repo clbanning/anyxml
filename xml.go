@@ -159,6 +159,20 @@ func escapeChars(s string) string {
 	return string(b)
 }
 
+// From clbanning/mxj issue #88
+// xmlCheckIsValid set switch to force decoding the encoded XML to
+// see if it is valid XML.
+var xmlCheckIsValid bool
+
+// XmlCheckIsValid forces the encoded XML to be checked for validity.
+func XmlCheckIsValid(b ...bool) {
+	if len(b) == 1 {
+		xmlCheckIsValid = b[0]
+		return
+	}
+	xmlCheckIsValid = !xmlCheckIsValid
+}
+
 // where the work actually happens
 // returns an error if an attribute is not atomic
 // patched with new version in github.com/clbanning/mxj - 2015.11.15
@@ -199,7 +213,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		var n int
 		var ss string
 		for k, v := range vv {
-			if k[:1] == "-" {
+			if len(k) > 0 && k[:1] == "-" {
 				switch v.(type) {
 				case string:
 					ss = v.(string)
@@ -267,7 +281,7 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 		elemlist := make([][2]interface{}, len(vv))
 		n = 0
 		for k, v := range vv {
-			if k[:1] == "-" {
+			if len(k) > 0 && k[:1] == "-" {
 				continue
 			}
 			elemlist[n][0] = k
