@@ -26,4 +26,17 @@ func TestXmlCheckIsValid(t *testing.T) {
 	if _, err := XmlIndent(m, "", "   "); err == nil {
 		t.Fatal("XmlIndent err: nil")
 	}
+
+	ms := map[string]interface{}{
+		"one":1,
+		"not":"another",
+	}
+	fmt.Printf("%v\n", ms)
+	if _, err = Xml(ms); err != nil {
+		t.Fatal("Xml(ms) err:", err)
+	}
+
+	if _, err = XmlIndent(ms, "", "   "); err != nil {
+		t.Fatal("XmlIndent(ms) err:", err)
+	}
 }
