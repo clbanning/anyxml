@@ -207,7 +207,7 @@ func XmlIndent(v interface{}, prefix, indent string, rootTag ...string) ([]byte,
 
 	if xmlCheckIsValid {
 		d := xml.NewDecoder(bytes.NewReader(b))
-		for _, err = d.Token(); err != io.EOF; {
+		for {
 			_, err = d.Token()
 			if err == io.EOF {
 				err = nil
