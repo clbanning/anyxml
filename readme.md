@@ -61,4 +61,4 @@ output:
 	&lt;/mydoc&gt;
 </code></pre>
 
-An example of encoding a map with mixed key types is in anyxml/examples/goofy_map.go.
+An example of encoding a map with mixed value types is in anyxml/examples/goofy_map.go.
