@@ -9,8 +9,7 @@ See mxj package documentation for caveats, etc.
 
    - 'nil' Map values, which may represent 'null' JSON values, are encoded as '\<tag/\>' unless
      XmlGoEmptyElemSyntax() has been called to change the default to encoding/xml syntax, '\<tag\>\</tag\>'.
-   - In map[string]interface{} values keys that are prepended by a hyphen, '-', are assumed to be
-     attributes.
+   - map[string]interface{} keys that are prepended by a hyphen, '-', are assumed to be attribute labels.
 
 <h4>Caveat</h4>
 
